@@ -1,6 +1,6 @@
 import React from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
-
+import { Redirect } from 'react-router-dom';
 
 class Login extends React.Component {
 
@@ -39,6 +39,12 @@ class Login extends React.Component {
     };
 
     render() {
+        
+        //redirects to the friends list when login is pressed if they have the token
+        if(localStorage.getItem('token')){
+           return <Redirect to = 'protected' />
+        }
+
         return (
             <div>
 
