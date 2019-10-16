@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import Friend from './Friend';
 
-import Loader from 'react-loader-spinner';
 
-import { axiosWithAuth } from '../utils/axiosWithAuth';
+
 import { getFriends } from '../actions';
 
 
@@ -17,40 +19,34 @@ class FriendsList extends React.Component {
     }
 
 
-
     render() {
-        
         return (
-        <>   
-    <h1>Friends List</h1>
-
-        {this.props.isFetching && 
-          
-
-            <Loader type = "Puff" height = "60" width = "60" />
-            <h1>Loading Friends!</h1>
-
-     
-        }
-a
-     
-       {this.props.friends &&
-        <div>
+            <>
             
-            <Link to = "/add">Add Friend!</Link>
-
-        {this.props.friends.map(friend => (
-            <Friend key = {friend.id} name = {friend.name} age = {friend.age} email = {friend.email} />
-        ))}
-      
-        }
-        </div>
-// {/*        
-       </div> */}
-
+            {this.props.isFetching && <p className="fetching">Fetching...</p>}
+            {this.props.friends && 
+            <div className="friends-list">
+                <div className="header">
+                    <h2>Friend's List</h2>
+                    <Link to='/add'><button>Add Friend</button></Link>
+                </div>
+                {this.props.friends.map(friend => (
+                    <Friend key={friend.id} name={friend.name} age={friend.age} email={friend.email}/>
+                ))}
+            </div>
+            }
+            </>
         )
     }
-   
-};
+}
 
-export default FriendsList
+const mapStateToProps = state => ({
+    friends: state.friends,
+    isFetching: state.isFetching,
+    isPosting: state.isPosting,
+    error: state.error
+});
+
+export default connect(
+    mapStateToProps, 
+    { getFriends })(FriendsList);

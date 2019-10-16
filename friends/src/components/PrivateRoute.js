@@ -16,7 +16,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         <Route 
         {...rest}
         
-        component
+       
 
         //make sure the user is logged in
         render = {props => {

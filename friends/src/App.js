@@ -6,10 +6,12 @@ import './App.css';
 import Login from './components/Login';
 import PrivateRoute from './components/PrivateRoute';
 import FriendsList from './components/FriendsList';
+import AddFriend from './components/AddFriend';
+
 
 function App() {
   return (
-    <Router>
+
 
     <div className="App">
       <h1>All You Need Are Friends!</h1>
@@ -19,15 +21,15 @@ function App() {
       </div>
 
       <Switch>
-
-        <PrivateRoute  exact path = '/protected' component = {FriendsList} />
         <Route path = "/login" component = {Login} />
+        <PrivateRoute  exact path = '/friends' component = {FriendsList} />
+        <PrivateRoute path = '/add' component = {AddFriend} />
 
       </Switch>
 
     </div>
 
-    </Router>
+
   );
 }
 

@@ -7,7 +7,7 @@ const initialState = {
     error: ''
 };
 
-export default reducer = (state = initialState, action) => {
+export default function friendReducer (state = initialState, action)  {
 
     switch(action.type) {
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default Friend = (props) => {
+export default function Friend(props) {
 
     return (
         <div>

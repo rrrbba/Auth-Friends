@@ -1,77 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
-import { Redirect } from 'react-router-dom';
 
-class Login extends React.Component {
 
-    state = {
-        credentials: {
-            username: '',
-            password: ''
-        }
-    };
 
-    handleChange = e => {
-        this.setState({
-            
-            credentials: {
-                ...this.state.credentials,
 
-                [e.target.name] : e.target.value
-            }
-        });
-    };
 
-    login = e => {
-        e.preventDefault();
 
-        //login to retrieve JWT token
-        //add the token to localStorage
-        //route to /protected (whatever landing page)
+const Login = (props) => {
 
-        axiosWithAuth()
-            .post('/api/login', this.state.credentials)
-            .then(res => {
-                localStorage.setItem('token', res.data.payload);
-                this.props.history.push('/protected');
-                console.log("YOU'RE IN!")
-            })
-            .catch(err => console.log(err.response));
-    };
+    const [credentials, setCredentials] = useState({
+        username: '',
+        password: '',
+    });
 
-    render() {
-        
-        //redirects to the friends list when login is pressed if they have the token
-        if(localStorage.getItem('token')){
-           return <Redirect to = 'protected' />
-        }
-
-        return (
-            <div>
-
-                <form onSubmit = {this.login}>
-
-                    <input
-                        type = "text"
-                        name = "username"
-                        value = {this.state.credentials.username}
-                        onChange = {this.handleChange}
-                    />
-
-                    <input
-                        type = "password"
-                        name = "password" 
-                        value = {this.state.credentials.password}
-                        onChange = {this.handleChange}
-                    />
-
-                    <button>Log In!</button>
-
-                </form>
-            </div>
-        );
+    const handleChange = (e) => {
+        setCredentials({
+            ...credentials, 
+            [e.target.name]: e.target.value})
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axiosWithAuth()
+        .post('api/login', credentials)
+        .then(response => {
+            console.log(response);
+            localStorage.setItem('token', response.data.payload);
+            props.history.push('/friends');
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
+    return  (
+    <div>
+
+        <form onSubmit = {handleSubmit} >
+
+            <input 
+            type = "text" 
+            name = "username" 
+            placeholder = "Username" 
+            onChange = {handleChange} 
+            value = {credentials.username} 
+            />
+
+            <input 
+            type="password" 
+            name="password" 
+            placeholder="Password" 
+            onChange={handleChange} 
+            value={credentials.password} 
+            />
+
+            <button >Log In</button>
+
+        </form>
+
+    </div>
+    )
 }
 
 

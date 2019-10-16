@@ -43,6 +43,6 @@ export const createFriend = friend => dispatch => {
     })
     .catch(error => {
         console.log(error);
-        dispatch({ type: FAILURE_FAILURE, payload: error })
+        dispatch({ type: CREATE_FAILURE, payload: error })
     })
 }
